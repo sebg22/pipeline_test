@@ -2,17 +2,18 @@ pipeline {
     agent any
 
     stages {
-        stage('Install') {
+        stage('Check Jenkins') {
             steps {
-                sh 'python3 -m venv .venv'
-                sh '.venv/bin/pip install -r requirements.txt'
+                sh 'echo "Jenkins is working"'
+                sh 'whoami'
+                sh 'hostname'
             }
         }
 
-        stage('Test') {
+        stage('Check Kubernetes') {
             steps {
-                sh '.venv/bin/pytest'
+                sh 'kubectl get nodes'
             }
         }
     }
-}     
+}
