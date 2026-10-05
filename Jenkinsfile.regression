@@ -16,7 +16,13 @@ pipeline {
 
                     jobs.each { jobName ->
                         branches[jobName] = {
+				def start = System.currentTimeMillis()
+
                             build job: jobName, wait: true
+
+
+				def seconds = (System.currentTimeMillis() - start) / 1000
+				echo "${jobName} took ${seconds} seconds"
                         }
                     }
 
