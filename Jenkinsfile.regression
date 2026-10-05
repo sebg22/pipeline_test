@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Run downstream jobs') {
+            steps {
+                script {
+                    def jobs = [
+                        'lab-unit-tests',
+                        'lab-api-tests',
+                        'lab-dependency-report',
+                        'lab-publish-report'
+                    ]
+
+                    def branches = [:]
+
+                    jobs.each { jobName ->
+                        branches[jobName] = {
+                            build job: jobName, wait: true
+                        }
+                    }
+
+                    parallel branches
+                }
+            }
+        }
+    }
+}
